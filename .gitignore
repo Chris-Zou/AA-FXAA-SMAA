@@ -41,7 +41,6 @@ x64/
 x86/
 bld/
 [Bb]in/
-[Oo]bj/
 [Ll]og/
 
 # Visual C++ cache files
@@ -57,6 +56,4 @@ ipch/
 
 #Specifics
 *.txt
-
-
 
