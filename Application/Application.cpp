@@ -116,218 +116,220 @@ void Application::Render()
 	_directX->SetBackBufferAsRenderTarget();
 	
 	*/
-	_directX->ClearBackBuffer(XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f));
-	
-	if (_test)
-	{
-		switch (_testState)
-		{
-		case TestingState::NOAA:
-		{
-			_currentAliasingMethod = AntiAliasingMethod::NOAA;
-			ResetSampling();
 
-			_currentScene = Scene::A;
-			ChangeScene(Scene::A);
-			_testState = NOAARUN;
-			break;
-		}
-		case TestingState::NOAARUN:
-		{	
-			double adt = _avgFPS;
-			double act = _avgCT * 1000;
-			if (sceneChange)
-			{
-				switch (_currentScene)
-				{
-				case Application::A:
-				{
-					_noaaTestResults[_currentScene][0] = adt;
-					_noaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::B);
-					ResetSampling();
-					break;
-				}
-				case Application::B:
-				{
-					_noaaTestResults[_currentScene][0] = adt;
-					_noaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::C);
-					ResetSampling();
-					break;
-				}
-				case Application::C:
-				{
-					_noaaTestResults[_currentScene][0] = adt;
-					_noaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::D);
-					ResetSampling();
-					break;
-				}
-				case Application::D:
-				{
-					_noaaTestResults[_currentScene][0] = adt;
-					_noaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::E);
-					ResetSampling();
-					break;
-				}
-				case Application::E:
-				{
-					_noaaTestResults[_currentScene][0] = adt;
-					_noaaTestResults[_currentScene][1] = act;
-					_testState = FXAA;
-					break;
-				}
-				}
-			}
-			_profiling.Start();
-			_renderModule->RenderAntiAliasing(_currentAliasingMethod);
-			_profiling.Stop();
-			break;
-		}
-		case TestingState::FXAA:
-		{
-			_currentAliasingMethod = AntiAliasingMethod::FXAA;
-			ResetSampling();
-			_currentScene = Scene::A;
-			ChangeScene(Scene::A);
-			_testState = FXAARUN;
-			break;
-		}
-		case TestingState::FXAARUN:
-		{
-			double adt = _avgFPS;
-			double act = _avgCT * 1000;
-			if (sceneChange)
-			{
-				switch (_currentScene)
-				{
-				case Application::A:
-				{
-					_fxaaTestResults[_currentScene][0] = adt;
-					_fxaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::B);
-					ResetSampling();
-					break;
-				}
-				case Application::B:
-				{
-					_fxaaTestResults[_currentScene][0] = adt;
-					_fxaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::C);
-					ResetSampling();
-					break;
-				}
-				case Application::C:
-				{
-					_fxaaTestResults[_currentScene][0] = adt;
-					_fxaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::D);
-					ResetSampling();
-					break;
-				}
-				case Application::D:
-				{
-					_fxaaTestResults[_currentScene][0] = adt;
-					_fxaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::E);
-					ResetSampling();
-					break;
-				}
-				case Application::E:
-				{
-					_fxaaTestResults[_currentScene][0] = adt;
-					_fxaaTestResults[_currentScene][1] = act;
-					_testState = SMAA;
-					break;
-				}
-				}
-			}
-			_profiling.Start();
-			_renderModule->RenderAntiAliasing(_currentAliasingMethod);
-			_profiling.Stop();
-			break;
-		}
-		case TestingState::SMAA:
-		{
-			_currentAliasingMethod = AntiAliasingMethod::SMAA;
-			ResetSampling();
-			_currentScene = Scene::A;
-			ChangeScene(Scene::A);
-			_testState = SMAARUN;
-			break;
-		}
-		case TestingState::SMAARUN:
-		{
-			double adt = _avgFPS;
-			double act = _avgCT * 1000;
-			if (sceneChange)
-			{
-				switch (_currentScene)
-				{
-				case Application::A:
-				{
-					_smaaTestResults[_currentScene][0] = adt;
-					_smaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::B);
-					ResetSampling();
-					break;
-				}
-				case Application::B:
-				{
-					_smaaTestResults[_currentScene][0] = adt;
-					_smaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::C);
-					ResetSampling();
-					break;
-				}
-				case Application::C:
-				{
-					_smaaTestResults[_currentScene][0] = adt;
-					_smaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::D);
-					ResetSampling();
-					break;
-				}
-				case Application::D:
-				{
-					_smaaTestResults[_currentScene][0] = adt;
-					_smaaTestResults[_currentScene][1] = act;
-					ChangeScene(Scene::E);
-					ResetSampling();
-					break;
-				}
-				case Application::E:
-				{
-					_smaaTestResults[_currentScene][0] = adt;
-					_smaaTestResults[_currentScene][1] = act;
-					_testState = TESTDONE;
-					ResetSampling();
-					break;
-				}
-				}
-			}
-			_profiling.Start();
-			_renderModule->RenderAntiAliasing(_currentAliasingMethod);
-			_profiling.Stop();
-			break;
-		}
-		case TESTDONE:
-		{
-			WriteToFile();
-			_test = false;
-			break;
-		}
-		}
-	}
-	else
+	if (!_currentAliasingMethod == AntiAliasingMethod::NOAA)
 	{
-		_profiling.Start();
-		_renderModule->RenderAntiAliasing(_currentAliasingMethod);
-		_profiling.Stop();
+		_directX->ClearBackBuffer(XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f));
+		if (_test)
+		{
+			switch (_testState)
+			{
+			case TestingState::NOAA:
+			{
+				_currentAliasingMethod = AntiAliasingMethod::NOAA;
+				ResetSampling();
+
+				_currentScene = Scene::A;
+				ChangeScene(Scene::A);
+				_testState = NOAARUN;
+				break;
+			}
+			case TestingState::NOAARUN:
+			{
+				double adt = _avgFPS;
+				double act = _avgCT * 1000;
+				if (sceneChange)
+				{
+					switch (_currentScene)
+					{
+					case Application::A:
+					{
+						_noaaTestResults[_currentScene][0] = adt;
+						_noaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::B);
+						ResetSampling();
+						break;
+					}
+					case Application::B:
+					{
+						_noaaTestResults[_currentScene][0] = adt;
+						_noaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::C);
+						ResetSampling();
+						break;
+					}
+					case Application::C:
+					{
+						_noaaTestResults[_currentScene][0] = adt;
+						_noaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::D);
+						ResetSampling();
+						break;
+					}
+					case Application::D:
+					{
+						_noaaTestResults[_currentScene][0] = adt;
+						_noaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::E);
+						ResetSampling();
+						break;
+					}
+					case Application::E:
+					{
+						_noaaTestResults[_currentScene][0] = adt;
+						_noaaTestResults[_currentScene][1] = act;
+						_testState = FXAA;
+						break;
+					}
+					}
+				}
+				_profiling.Start();
+				_renderModule->RenderAntiAliasing(_currentAliasingMethod);
+				_profiling.Stop();
+				break;
+			}
+			case TestingState::FXAA:
+			{
+				_currentAliasingMethod = AntiAliasingMethod::FXAA;
+				ResetSampling();
+				_currentScene = Scene::A;
+				ChangeScene(Scene::A);
+				_testState = FXAARUN;
+				break;
+			}
+			case TestingState::FXAARUN:
+			{
+				double adt = _avgFPS;
+				double act = _avgCT * 1000;
+				if (sceneChange)
+				{
+					switch (_currentScene)
+					{
+					case Application::A:
+					{
+						_fxaaTestResults[_currentScene][0] = adt;
+						_fxaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::B);
+						ResetSampling();
+						break;
+					}
+					case Application::B:
+					{
+						_fxaaTestResults[_currentScene][0] = adt;
+						_fxaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::C);
+						ResetSampling();
+						break;
+					}
+					case Application::C:
+					{
+						_fxaaTestResults[_currentScene][0] = adt;
+						_fxaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::D);
+						ResetSampling();
+						break;
+					}
+					case Application::D:
+					{
+						_fxaaTestResults[_currentScene][0] = adt;
+						_fxaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::E);
+						ResetSampling();
+						break;
+					}
+					case Application::E:
+					{
+						_fxaaTestResults[_currentScene][0] = adt;
+						_fxaaTestResults[_currentScene][1] = act;
+						_testState = SMAA;
+						break;
+					}
+					}
+				}
+				_profiling.Start();
+				_renderModule->RenderAntiAliasing(_currentAliasingMethod);
+				_profiling.Stop();
+				break;
+			}
+			case TestingState::SMAA:
+			{
+				_currentAliasingMethod = AntiAliasingMethod::SMAA;
+				ResetSampling();
+				_currentScene = Scene::A;
+				ChangeScene(Scene::A);
+				_testState = SMAARUN;
+				break;
+			}
+			case TestingState::SMAARUN:
+			{
+				double adt = _avgFPS;
+				double act = _avgCT * 1000;
+				if (sceneChange)
+				{
+					switch (_currentScene)
+					{
+					case Application::A:
+					{
+						_smaaTestResults[_currentScene][0] = adt;
+						_smaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::B);
+						ResetSampling();
+						break;
+					}
+					case Application::B:
+					{
+						_smaaTestResults[_currentScene][0] = adt;
+						_smaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::C);
+						ResetSampling();
+						break;
+					}
+					case Application::C:
+					{
+						_smaaTestResults[_currentScene][0] = adt;
+						_smaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::D);
+						ResetSampling();
+						break;
+					}
+					case Application::D:
+					{
+						_smaaTestResults[_currentScene][0] = adt;
+						_smaaTestResults[_currentScene][1] = act;
+						ChangeScene(Scene::E);
+						ResetSampling();
+						break;
+					}
+					case Application::E:
+					{
+						_smaaTestResults[_currentScene][0] = adt;
+						_smaaTestResults[_currentScene][1] = act;
+						_testState = TESTDONE;
+						ResetSampling();
+						break;
+					}
+					}
+				}
+				_profiling.Start();
+				_renderModule->RenderAntiAliasing(_currentAliasingMethod);
+				_profiling.Stop();
+				break;
+			}
+			case TESTDONE:
+			{
+				WriteToFile();
+				_test = false;
+				break;
+			}
+			}
+		}
+		else
+		{
+			_profiling.Start();
+			_renderModule->RenderAntiAliasing(_currentAliasingMethod);
+			_profiling.Stop();
+		}
 	}
-	
 
 	_directX->SwapChain();
 	_profiling.OnFrameEnd();

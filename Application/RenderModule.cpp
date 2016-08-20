@@ -97,13 +97,18 @@ void RenderModule::RenderLight(Camera* camera, int aliasingMethod)
 	_orthoWindow->Render(_deviceContext);
 
 	//Fix rendertargets
-	if (aliasingMethod == AntiAliasingMethod::FXAA)
+	if (aliasingMethod == AntiAliasingMethod::NOAA)
+	{
+		_directX->SetBackBufferAsRenderTarget();
+		_lightShader->Render(_deviceContext, _samplerState, camera, _orthoWindow->GetIndexCount(), _directX->GetShaderResourceView(0, true), _directX->GetShaderResourceView(1, true), _light.GetDirection(), _light.GetDiffuseColor());
+	}
+	else if (aliasingMethod == AntiAliasingMethod::FXAA)
 	{
 		_directX->SetLightRenderTarget(false);
 		//Use the vs/ps to render to the buffers.
 		_lightShader->Render(_deviceContext, _samplerState, camera, _orthoWindow->GetIndexCount(), _directX->GetShaderResourceView(0, false), _directX->GetShaderResourceView(1, false), _light.GetDirection(), _light.GetDiffuseColor());
 	}
-	else
+	else if (aliasingMethod == AntiAliasingMethod::SMAA)
 	{
 		_directX->SetLightRenderTarget(true);
 		//Use the vs/ps to render to the buffers.
@@ -119,7 +124,7 @@ void RenderModule::RenderAntiAliasing(int method)
 	_orthoWindow->Render(_deviceContext);
 	if(method == AntiAliasingMethod::FXAA)
 		_AAHandler->Render(method, _deviceContext, _directX->GetShaderResourceView(2, false), _orthoWindow->GetIndexCount(), _directX->GetSamplerState(), _orthoWindow->GetScreenSize());
-	else
+	if (method == AntiAliasingMethod::SMAA)
 		_AAHandler->Render(method, _deviceContext, _directX->GetShaderResourceView(2, true), _orthoWindow->GetIndexCount(), _directX->GetSamplerState(), _orthoWindow->GetScreenSize());
 	_directX->TurnZBufferOn();
 }

@@ -22,14 +22,6 @@ void AntiAliasingHandler::Render(int method, ID3D11DeviceContext* deviceContext,
 {
 	switch (method)
 	{
-	case AntiAliasingMethod::NOAA:
-	{
-		this->directX->SetBackBufferAsRenderTarget();
-		this->directX->ClearBackBuffer(DirectX::XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f));
-		deviceContext->PSSetShaderResources(0, 1, &texture);
-		this->passThrough->RenderIndexed(deviceContext, samplerState, indexCount);
-		break;
-	}
 	case AntiAliasingMethod::FXAA:
 	{
 		this->fxaa->Render(deviceContext, samplerState, texture, screenSize);
