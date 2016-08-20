@@ -157,13 +157,13 @@ void SMAA::Render(ID3D11DeviceContext* deviceContext, ID3D11SamplerState* sample
 		{
 			deviceContext->PSSetShaderResources(i, 1, &nullSrv);
 		}
-		deviceContext->OMSetRenderTargets(1, &backBufferRTV, this->backBufferDSV);
-		//deviceContext->OMSetRenderTargets(1, &this->rTVA[EdgeDetection], this->backBufferDSV);
+		//deviceContext->OMSetRenderTargets(1, &backBufferRTV, this->backBufferDSV);
+		deviceContext->OMSetRenderTargets(1, &this->rTVA[EdgeDetection], this->backBufferDSV);
 
 		deviceContext->PSSetShaderResources(0, 1, &backbuffer);
 		this->edgeDetectionShaders->RenderIndexed(deviceContext, samplerState, 6);
 	}
-	/*
+	
 	// Blending Weight
 	{
 		//Set Render target
@@ -199,7 +199,7 @@ void SMAA::Render(ID3D11DeviceContext* deviceContext, ID3D11SamplerState* sample
 		deviceContext->PSSetShaderResources(0, 1, &backbuffer);
 		deviceContext->PSSetShaderResources(1, 1, &this->sRVA[BlendingWeight]);
 		this->neighbourhoodBlendingShaders->RenderIndexed(deviceContext, samplerState, 6);
-	}*/
+	}
 }
 
 void SMAA::CreateRenderTargets(ID3D11Device* device, DirectX::XMINT2 screenSize)

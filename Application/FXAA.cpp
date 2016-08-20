@@ -29,7 +29,7 @@ FXAA::FXAA(ID3D11Device* device, DirectX::XMINT2 screenSize, ID3D11RenderTargetV
 	sd.inputDesc[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	sd.inputDesc[1].InstanceDataStepRate = 0;
 
-	sd.pixelFilePath = "Assets/Shaders/FXAAPixelShader5.hlsl";
+	sd.pixelFilePath = "Assets/Shaders/FXAAPixelShader3.hlsl";
 	//sd.pixelFilePath = "Assets/Shaders/FXAAPS.hlsl";
 	sd.pixelHeader = "PS_FXAA";
 
