@@ -1,0 +1,18 @@
+NO AA: 
+A: DT: 1519A: ClockT: 1.5818
+B: DT: 1484B: ClockT: 1.59247
+C: DT: 2121C: ClockT: 1.55027
+D: DT: 1342D: ClockT: 1.6438
+E: DT: 1392E: ClockT: 1.6316
+FXAA: 
+A: DT: 1662A: ClockT: 2.69407
+B: DT: 1875B: ClockT: 2.7176
+C: DT: 2136C: ClockT: 2.55887
+D: DT: 1695D: ClockT: 2.71133
+E: DT: 1781E: ClockT: 2.77907
+SMAA: 
+A: DT: 768A: ClockT: 4.51033
+B: DT: 846B: ClockT: 4.4832
+C: DT: 1123C: ClockT: 4.5254
+D: DT: 777D: ClockT: 4.4608
+E: DT: 819E: ClockT: 4.4862
